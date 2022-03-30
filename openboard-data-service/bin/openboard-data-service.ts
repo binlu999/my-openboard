@@ -2,8 +2,13 @@
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
 import { OpenboardDataServiceStack } from '../lib/openboard-data-service-stack';
+import ConfigurationBuilder from '../lib/configurationBuilder'
 
 const app = new cdk.App();
+
+const configurationBuilder = new ConfigurationBuilder();
+const config=configurationBuilder.buildAppConfig(app);
+
 new OpenboardDataServiceStack(app, 'OpenboardDataServiceStack', {
   /* If you don't specify 'env', this stack will be environment-agnostic.
    * Account/Region-dependent features and context lookups will not work,
