@@ -28,6 +28,21 @@
     "@aws-cdk/core:target-partitions": [
       "aws",
       "aws-cn"
-    ]
+    ],
+    "dev":{
+      "appName":"my-open-board",
+      "appDomain":"dev",
+      "appTagBill":"dev"
+    },
+    "clcc":{
+      "appName":"my-open-board",
+      "appDomain":"clcc",
+      "appTagBill":"clcc"
+    },
+    "tip":{
+      "appName":"my-open-board",
+      "appDomain":"tip",
+      "appTagBill":"tip"
+    }
   }
 }

@@ -1,14 +1,15 @@
 import * as CDK from 'aws-cdk-lib';
 
-interface AppConfigureation {
+interface AppConfiguration {
     appName: string,
     appDomain: string,
     appTagBill: string
 }
 
-export default class ConfigurationBuilder {
-    buildAppConfig(app: CDK.App): AppConfigureation {
+class ConfigurationBuilder {
+    buildAppConfig(app: CDK.App): AppConfiguration {
         const env = app.node.tryGetContext('config');
+        console.log("test");
         if (!env)
             throw new Error("Context variable missing on CDK command. Pass in as `-c config=xxx`");
 
@@ -31,3 +32,5 @@ export default class ConfigurationBuilder {
         return parameters[propName];
     }
 }
+
+export {ConfigurationBuilder,AppConfiguration};

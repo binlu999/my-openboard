@@ -2,14 +2,16 @@
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
 import { OpenboardDataServiceStack } from '../lib/openboard-data-service-stack';
-import ConfigurationBuilder from '../lib/configurationBuilder'
+import {ConfigurationBuilder} from '../lib/configurationBuilder'
 
 const app = new cdk.App();
 
 const configurationBuilder = new ConfigurationBuilder();
 const config=configurationBuilder.buildAppConfig(app);
+cdk.Tags.of(app).add("domain",config.appDomain);
+cdk.Tags.of(app).add("bill",config.appTagBill);
 
-new OpenboardDataServiceStack(app, 'OpenboardDataServiceStack', {
+new OpenboardDataServiceStack(app, config.appName+"-"+config.appDomain,config, {
   /* If you don't specify 'env', this stack will be environment-agnostic.
    * Account/Region-dependent features and context lookups will not work,
    * but a single synthesized template can be deployed anywhere. */
@@ -23,4 +25,5 @@ new OpenboardDataServiceStack(app, 'OpenboardDataServiceStack', {
   // env: { account: '123456789012', region: 'us-east-1' },
 
   /* For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html */
-});
+}
+);
