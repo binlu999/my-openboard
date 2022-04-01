@@ -1,0 +1,9 @@
+@endpoint=https://0p6v7xaljd.execute-api.us-east-1.amazonaws.com/prod
+
+POST {{endpoint}}/joborder/
+Content-Type: application/json
+
+{
+    "username":"blu"
+}
+###
