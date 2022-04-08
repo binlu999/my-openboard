@@ -1,6 +1,6 @@
 import { CfnOutput } from 'aws-cdk-lib';
 import { CfnIdentityPool, UserPool, UserPoolClient } from 'aws-cdk-lib/aws-cognito';
-import { Construct } from 'constructs';
+import { Construct } from 'constructs'
 import {AppConfiguration} from '../configurationBuilder';
 
 export class IdentityPoolWrapper {

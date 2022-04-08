@@ -4,6 +4,12 @@ POST {{endpoint}}/joborder/
 Content-Type: application/json
 
 {
-    "username":"blu"
+    "username":"blu",
+    "title":"This is a test",
+    "content":[
+        "this is 4\nthis 2\n    3        ",
+        "this is 5"
+    ]
+    
 }
 ###
