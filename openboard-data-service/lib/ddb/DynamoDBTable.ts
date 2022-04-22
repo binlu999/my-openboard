@@ -1,8 +1,8 @@
-import { Stack } from "aws-cdk-lib"
+import { Stack , RemovalPolicy} from "aws-cdk-lib"
 import { LambdaIntegration } from "aws-cdk-lib/aws-apigateway";
 import { AttributeType, Table } from "aws-cdk-lib/aws-dynamodb";
-import { Handler } from "aws-cdk-lib/aws-lambda";
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
+import { RetentionDays } from "aws-cdk-lib/aws-logs";
 import { join } from "path";
 
 export interface DDBTableProps{
@@ -50,7 +50,8 @@ export class DDBTable{
                 name:this.props.primaryKey,
                 type:AttributeType.STRING
             },
-            tableName:this.props.tableName
+            tableName:this.props.tableName,
+            removalPolicy:RemovalPolicy.DESTROY
         });
     }
 
@@ -83,6 +84,7 @@ export class DDBTable{
             entry:(join(__dirname,'..','..','src','ddb',this.props.source,`${lambdaName}.ts`)),
             handler:"handler",
             functionName:lambdaId,
+            logRetention:RetentionDays.THREE_DAYS,
             environment:{
                 TABLE_NAME:this.props.tableName,
                 PRIMARY_KEY:this.props.primaryKey

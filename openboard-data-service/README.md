@@ -16,3 +16,7 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 ## Project commands
 
 * `cdk init app --language typescript`  Initial project
+
+## References
+
+* https://bobbyhadz.com/blog/aws-cdk-s3-lifecycle-rules
