@@ -22,6 +22,7 @@ class FrontEnd{
     private siteDomain:String;
     private siteBucket:Bucket
     private cloudFrontOAI:OriginAccessIdentity;
+    private distribution:Distribution;
 
     constructor(stack:Stack,props:FrontEndProperties){
         this.stack=stack;
@@ -29,6 +30,7 @@ class FrontEnd{
         this.initialize();
         this.createContentBucket();
         this.createCloudFront();
+        this.createBucketDeployment();
     }
 
     private initialize(){
@@ -49,9 +51,10 @@ class FrontEnd{
             bucketName:`${this.siteDomain}`,
             publicReadAccess:false,
             blockPublicAccess:BlockPublicAccess.BLOCK_ALL,
-            websiteIndexDocument:'index.html',
+            //websiteIndexDocument:'index.html',
             removalPolicy:RemovalPolicy.DESTROY,
             autoDeleteObjects:true,
+            
             lifecycleRules:[
                 {
                     transitions:[
@@ -62,12 +65,13 @@ class FrontEnd{
                     ]
                 }
             ]
+            
         });
 
         this.siteBucket.addToResourcePolicy(
             new PolicyStatement(
                 {
-                    actions:["s3:GetObject"],
+                    actions:['s3:GetObject'],
                     resources:[this.siteBucket.arnForObjects("*")],
                     principals:[
                         new CanonicalUserPrincipal(this.cloudFrontOAI.cloudFrontOriginAccessIdentityS3CanonicalUserId)
@@ -75,15 +79,7 @@ class FrontEnd{
                 }
             )
         );
-        new BucketDeployment(this.stack,`${this.siteDomain}`+"-deployment",{
-            destinationBucket:this.siteBucket,
-            sources:[
-                Source.asset(
-                    join(__dirname,'../../../openboard-frontend')
-                )
-            ]
-        });
-
+        
         new CfnOutput(this.stack,`${this.siteDomain}`+'-forntend-bucket',{
             value:this.siteBucket.bucketName
         });
@@ -105,11 +101,12 @@ class FrontEnd{
             value:certificate.certificateArn
         });
 
-        const distribution=new Distribution(this.stack,this.props.subDomain+"-cloudfront_dist",{
-            //certificate:certificate,
+        this.distribution=new Distribution(this.stack,this.props.subDomain+"-cloudfront_dist",{
+            certificate:certificate,
             defaultRootObject:"index.html",
             domainNames:[`${this.siteDomain}`],
-            //minimumProtocolVersion:SecurityPolicyProtocol.TLS_V1_2_2021,
+            
+            minimumProtocolVersion:SecurityPolicyProtocol.TLS_V1_2_2021,
             errorResponses:[
                 {
                     httpStatus:403,
@@ -130,16 +127,30 @@ class FrontEnd{
         });
 
         new CfnOutput(this.stack,this.props.subDomain+"CF-DistributionId",{
-            value:distribution.distributionId
+            value:this.distribution.distributionId
         })
 
         new ARecord(this.stack,this.props.subDomain+'site-alias-record',{
             recordName:`${this.siteDomain}`,
-            target:RecordTarget.fromAlias(new CloudFrontTarget(distribution)),
+            target:RecordTarget.fromAlias(new CloudFrontTarget(this.distribution)),
             zone
         })
         
 
+    }
+
+    private createBucketDeployment(){
+        new BucketDeployment(this.stack,`${this.siteDomain}`+"-deployment",{
+            sources:[
+                Source.asset(
+                    join(__dirname,'../../../openboard-frontend')
+                )
+            ],
+            destinationBucket:this.siteBucket,
+            distribution:this.distribution,
+            distributionPaths:['/*']
+            
+        });
     }
 }
 
