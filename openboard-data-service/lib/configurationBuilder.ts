@@ -1,35 +1,31 @@
 import * as CDK from 'aws-cdk-lib';
+import { StringAttribute } from 'aws-cdk-lib/aws-cognito';
 
 interface AppConfiguration {
-    appName: string,
-    appDomain: string,
-    appTagBill: string
+    account:string,
+    region:string,
+    name:string,
+    domainName: string,
+    subDomain: string,
+    billTag: string,
+    appModules:string[]
 }
 
 class ConfigurationBuilder {
     buildAppConfig(app: CDK.App): AppConfiguration {
-        const env = app.node.tryGetContext('config');
-        console.log("test");
-        if (!env)
-            throw new Error("Context variable missing on CDK command. Pass in as `-c config=xxx`");
+        const account = app.node.tryGetContext('account');
+        const domainName = app.node.tryGetContext('domainName');
+        const configName = app.node.tryGetContext('config');
 
-        const envParameters = app.node.tryGetContext(env);
-        if (!env) {
-            const errorMsg = `Environment parameters not defined for ${env}`;
-            throw new Error(errorMsg);
-        }
-        return {
-            appName: this.assertValue(envParameters,'appName'),
-            appDomain: this.assertValue(envParameters,'appDomain'),
-            appTagBill: this.assertValue(envParameters,'appTagBill')
-        };
-    }
-
-    assertValue(parameters: Array<string>, propName: any): string {
-        if(!parameters[propName]||parameters[propName].trim().length===0){
-            throw new Error (propName+' does not exist or is empty');
-        }
-        return parameters[propName];
+        if (!account || !domainName || !configName)
+            throw new Error("Context variable missing on CDK command. Pass in as `-c config=xxx -c domainName=xyz.com -c account=123456`");
+        
+        console.log(configName);
+        const config = app.node.tryGetContext(configName);
+        config["account"]=account;
+        config['domainName']=domainName;
+        console.log(config);
+        return config;
     }
 }
 

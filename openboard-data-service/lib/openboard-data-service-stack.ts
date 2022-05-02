@@ -3,8 +3,9 @@ import { RestApi } from 'aws-cdk-lib/aws-apigateway';
 import { Construct } from 'constructs';
 import { AppConfiguration } from './configurationBuilder'
 import { DDBTableProps, DDBTable } from './ddb/DynamoDBTable';
-//import { JavaLambdaHandler, JavaLambdaProperty } from './lambda/javaLambdaHandler';
-import {PPTX,PPTXProperties} from './pptx/pptx'
+import {PPTX, PPTXModule} from './pptx/pptx'
+import {APIEmail, APIEMAILModule} from './apiemail/apiEmail'
+import { FrontEnd, FRONTENDModule } from './cdn/frontEnd';
 
 
 // import * as sqs from 'aws-cdk-lib/aws-sqs';
@@ -17,6 +18,8 @@ export class OpenboardDataServiceStack extends Stack {
   constructor(scope: Construct, id: string, appConfig: AppConfiguration, props?: StackProps) {
     super(scope, id, props);
     console.log(appConfig);
+    console.log("Stack env:=================================");
+    console.log("Stack env:",props);
     this.appConfig = appConfig;
     this.initializeStack();
     // const queue = new sqs.Queue(this, 'OpenboardDataServiceQueue', {
@@ -28,7 +31,16 @@ export class OpenboardDataServiceStack extends Stack {
     this.initialAppSuffix();
     this.createAPIGateway();
     this.createDDBResources();
-    this.createPPTX();
+    
+    if( this.appConfig.appModules.includes(PPTXModule))
+      this.createPPTX();
+
+    if(this.appConfig.appModules.includes(APIEMAILModule))
+      this.createAPIEmail();
+    
+    if(this.appConfig.appModules.includes(FRONTENDModule))
+      this.createFrontEnd();
+      
   }
 
   private initialAppSuffix(){
@@ -42,12 +54,12 @@ export class OpenboardDataServiceStack extends Stack {
   }
 
   private createAPIGateway() {
-    this.restAPI = new RestApi(this, this.appConfig.appName + "-" + this.appConfig.appDomain + "-api");
+    this.restAPI = new RestApi(this, this.appConfig.name + "-" + this.appConfig.subDomain + "-api");
   }
 
   createDDBResources() {
     const joborderTableProps: DDBTableProps = {
-      tableName: this.appConfig.appDomain + '-joborder',
+      tableName: this.appConfig.subDomain + '-joborder',
       source: 'joborder',
       primaryKey: 'id',
       createLambdaPath: 'create',
@@ -63,8 +75,8 @@ export class OpenboardDataServiceStack extends Stack {
 
   private createPPTX() {
     const pptXHandler = new PPTX(this, {
-      s3BucketName:this.appConfig.appDomain + '-pptx',
-      lambdaName: this.appConfig.appDomain + '-pptx-handler',
+      s3BucketName:this.appConfig.subDomain + '-pptx',
+      lambdaName: this.appConfig.subDomain + '-pptx-handler',
       jarFile: "pptservice-0.0.1-SNAPSHOT.jar",
       handler: "com.myopenboard.service.pptservice.handler.EventHandler::handleRequest",
       timeoutInSeconds: 180,
@@ -80,5 +92,21 @@ export class OpenboardDataServiceStack extends Stack {
 
     const restApiResource = this.restAPI.root.addResource('pptx');
     restApiResource.addMethod('POST', pptXHandler.pptxHandlerLambdaIntegration)
+  }
+
+  private createAPIEmail(){
+    const apiEmail = new APIEmail(this,{
+      name:this.appConfig.subDomain+'-apiemail'
+    });
+    const restApiResource = this.restAPI.root.addResource('apiemail');
+    restApiResource.addMethod('POST',apiEmail.lambdaIntegration);
+  }
+
+  private createFrontEnd(){
+    new FrontEnd(this,{
+      domainName:this.appConfig.domainName,
+      subDomain:this.appConfig.subDomain,
+      region:this.appConfig.region
+    });
   }
 }

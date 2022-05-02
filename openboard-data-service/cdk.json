@@ -29,20 +29,28 @@
       "aws",
       "aws-cn"
     ],
-    "dev":{
-      "appName":"my-open-board",
-      "appDomain":"dev",
-      "appTagBill":"dev"
+    "dev": {
+      "appName": "my-open-board",
+      "appDomain": "dev",
+      "appTagBill": "dev"
     },
-    "clcc":{
-      "appName":"my-open-board",
-      "appDomain":"clcc",
-      "appTagBill":"clcc"
+    "clcc": {
+      "aaount": "1234567",
+      "region": "us-east-1",
+      "name": "my-open-board",
+      "domainName": "siteurl.com",
+      "subDomain": "clcc",
+      "billTag": "clcc",
+      "appModules": [
+        "pptx",
+        "apiemail",
+        "frontend"
+      ]
     },
-    "tip":{
-      "appName":"my-open-board",
-      "appDomain":"tip",
-      "appTagBill":"tip"
+    "tip": {
+      "appName": "my-open-board",
+      "appDomain": "tip",
+      "appTagBill": "tip"
     }
   }
 }

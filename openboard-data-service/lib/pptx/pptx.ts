@@ -6,7 +6,9 @@ import { Bucket,StorageClass } from "aws-cdk-lib/aws-s3";
 
 import { join } from 'path';
 
-export interface PPTXProperties{
+const PPTXModule:string='pptx';
+
+interface PPTXProperties{
     s3BucketName:String,
     lambdaName:String,
     jarFile:String,
@@ -18,7 +20,7 @@ export interface PPTXProperties{
     }
 }
 
-export class PPTX {
+class PPTX {
     private stack:Stack;
      private props:PPTXProperties;
      private bucket:Bucket;
@@ -81,3 +83,5 @@ export class PPTX {
          this.bucket.grantPut(this.lambdaFuction);
      }
 }
+
+export {PPTXModule,PPTX,PPTXProperties}

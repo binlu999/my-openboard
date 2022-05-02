@@ -20,3 +20,4 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 ## References
 
 * https://bobbyhadz.com/blog/aws-cdk-s3-lifecycle-rules
+* CDK Static Website https://github.com/aws-samples/aws-cdk-examples/tree/master/typescript/static-site

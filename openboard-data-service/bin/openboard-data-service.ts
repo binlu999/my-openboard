@@ -8,10 +8,11 @@ const app = new cdk.App();
 
 const configurationBuilder = new ConfigurationBuilder();
 const config=configurationBuilder.buildAppConfig(app);
-cdk.Tags.of(app).add("domain",config.appDomain);
-cdk.Tags.of(app).add("bill",config.appTagBill);
+cdk.Tags.of(app).add("name",config.name);
+cdk.Tags.of(app).add("SubDomain",config.subDomain);
+cdk.Tags.of(app).add("bill",config.subDomain);
 
-new OpenboardDataServiceStack(app, config.appName+"-"+config.appDomain,config, {
+new OpenboardDataServiceStack(app, config.name+"-"+config.subDomain,config, {
   /* If you don't specify 'env', this stack will be environment-agnostic.
    * Account/Region-dependent features and context lookups will not work,
    * but a single synthesized template can be deployed anywhere. */
@@ -22,7 +23,7 @@ new OpenboardDataServiceStack(app, config.appName+"-"+config.appDomain,config, {
 
   /* Uncomment the next line if you know exactly what Account and Region you
    * want to deploy the stack to. */
-  // env: { account: '123456789012', region: 'us-east-1' },
+  env: { account: config.account, region: config.region },
 
   /* For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html */
 }
