@@ -2,10 +2,11 @@ import { Fn, Stack, StackProps } from 'aws-cdk-lib';
 import { RestApi } from 'aws-cdk-lib/aws-apigateway';
 import { Construct } from 'constructs';
 import { AppConfiguration } from './configurationBuilder'
-import { DDBTableProps, DDBTable } from './ddb/DynamoDBTable';
+import { DynamoDBTableProperties, DynamoDBTable } from './ddb/DynamoDBTable';
 import {PPTX, PPTXModule} from './pptx/pptx'
 import {APIEmail, APIEMAILModule} from './apiemail/apiEmail'
 import { FrontEnd, FRONTENDModule } from './cdn/frontEnd';
+import { GroupEvent, GROUPEVENTModule } from './groupEvent/groupEvent';
 
 
 // import * as sqs from 'aws-cdk-lib/aws-sqs';
@@ -40,6 +41,9 @@ export class OpenboardDataServiceStack extends Stack {
     
     if(this.appConfig.appModules.includes(FRONTENDModule))
       this.createFrontEnd();
+
+    if(this.appConfig.appModules.includes(GROUPEVENTModule))
+      this.createGroupEvent();
       
   }
 
@@ -58,9 +62,8 @@ export class OpenboardDataServiceStack extends Stack {
   }
 
   createDDBResources() {
-    const joborderTableProps: DDBTableProps = {
+    const joborderTableProps: DynamoDBTableProperties = {
       tableName: this.appConfig.subDomain + '-joborder',
-      source: 'joborder',
       primaryKey: 'id',
       createLambdaPath: 'create',
       secondaryIndexes: [
@@ -68,7 +71,7 @@ export class OpenboardDataServiceStack extends Stack {
       ]
     }
 
-    const joborderTabl = new DDBTable(this, joborderTableProps);
+    const joborderTabl = new DynamoDBTable(this, joborderTableProps);
     const restApiResouce = this.restAPI.root.addResource('joborder');
     restApiResouce.addMethod('POST', joborderTabl.createLambdaIntegration);
   }
@@ -108,5 +111,11 @@ export class OpenboardDataServiceStack extends Stack {
       subDomain:this.appConfig.subDomain,
       region:this.appConfig.region
     });
+  }
+
+  private createGroupEvent(){
+    new GroupEvent(this,this.restAPI,{
+      subDomian:this.appConfig.subDomain
+    })
   }
 }

@@ -51,7 +51,6 @@ class FrontEnd{
             bucketName:`${this.siteDomain}`,
             publicReadAccess:false,
             blockPublicAccess:BlockPublicAccess.BLOCK_ALL,
-            //websiteIndexDocument:'index.html',
             removalPolicy:RemovalPolicy.DESTROY,
             autoDeleteObjects:true,
             
@@ -143,7 +142,7 @@ class FrontEnd{
         new BucketDeployment(this.stack,`${this.siteDomain}`+"-deployment",{
             sources:[
                 Source.asset(
-                    join(__dirname,'../../../openboard-frontend')
+                    join(__dirname,'../../../openboard-frontend/',this.props.subDomain,'/dist/',this.props.subDomain)
                 )
             ],
             destinationBucket:this.siteBucket,

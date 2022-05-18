@@ -5,9 +5,8 @@ import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { RetentionDays } from "aws-cdk-lib/aws-logs";
 import { join } from "path";
 
-export interface DDBTableProps{
+export interface DynamoDBTableProperties{
     tableName:string,
-    source:string,
     primaryKey:string,
     createLambdaPath?:string,
     updateLambdaPath?:string,
@@ -16,9 +15,9 @@ export interface DDBTableProps{
     secondaryIndexes?:string[]
 }
 
-export class DDBTable{
+export class DynamoDBTable{
     private stack:Stack;
-    private props:DDBTableProps;
+    private props:DynamoDBTableProperties;
     private table:Table;
 
     private createLambda:NodejsFunction|undefined;
@@ -31,7 +30,7 @@ export class DDBTable{
     public updateLambdaIntegration:LambdaIntegration;
     public deleteLambdaIntegration:LambdaIntegration;
 
-    public constructor(stack:Stack,props:DDBTableProps){
+    public constructor(stack:Stack,props:DynamoDBTableProperties){
         this.stack=stack;
         this.props=props;
         this.initialize();
@@ -81,7 +80,7 @@ export class DDBTable{
     private createSingleLambda(lambdaName:string):NodejsFunction{
         const lambdaId=`${this.props.tableName}-${lambdaName}`;
         return new NodejsFunction(this.stack,lambdaId,{
-            entry:(join(__dirname,'..','..','src','ddb',this.props.source,`${lambdaName}.ts`)),
+            entry:(join(__dirname,'..','..','src','ddb',`${lambdaName}.ts`)),
             handler:"handler",
             functionName:lambdaId,
             logRetention:RetentionDays.THREE_DAYS,

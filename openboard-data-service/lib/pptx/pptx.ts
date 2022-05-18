@@ -2,7 +2,7 @@ import { Duration, Stack , RemovalPolicy } from 'aws-cdk-lib';
 import { LambdaIntegration } from 'aws-cdk-lib/aws-apigateway';
 import { Code, Function, Runtime } from 'aws-cdk-lib/aws-lambda';
 import {RetentionDays} from 'aws-cdk-lib/aws-logs';
-import { Bucket,StorageClass } from "aws-cdk-lib/aws-s3";
+import { BlockPublicAccess, Bucket,StorageClass } from "aws-cdk-lib/aws-s3";
 
 import { join } from 'path';
 
@@ -47,6 +47,7 @@ class PPTX {
             bucketName:`${this.props.s3BucketName}`,
             removalPolicy:RemovalPolicy.DESTROY,
             autoDeleteObjects:true,
+            blockPublicAccess:BlockPublicAccess.BLOCK_ALL,
             lifecycleRules:[
                 {
                     transitions:[
