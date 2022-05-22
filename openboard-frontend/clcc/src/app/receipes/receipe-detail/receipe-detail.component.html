@@ -1,6 +1,11 @@
 <div class="row">
     <div class="col-xs-12">
-        <h1>Receipe Name</h1>
+        <img [src]="receipe.imagePath" alt="{{receipe.name}}" class="img-responsive" style="max-height:200px;">
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <h1>{{receipe.name}}</h1>
     </div>
 </div>
 <div class="row">
@@ -15,7 +20,7 @@
 </div>
 <div class="row">
     <div class="col-xs-12">
-        Description
+       {{receipe.description}}
     </div>
 </div>
 <div class="row">
