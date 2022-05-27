@@ -10,9 +10,14 @@ import { ReceipeService } from './receipe.service';
 })
 export class ReceipesComponent implements OnInit {
   selectedReceipe:Receipe;
-  constructor() { }
+  constructor(private receipeService:ReceipeService) { }
 
   ngOnInit(): void {
+    this.receipeService.selectedReceipe.subscribe(
+      (receipe:Receipe)=>{
+        this.selectedReceipe=receipe;
+      }
+    )
   }
 
 }
