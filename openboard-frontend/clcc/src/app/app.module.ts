@@ -12,6 +12,8 @@ import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 import { ShoppingEditComponent } from './shopping-list/shopping-edit/shopping-edit.component';
 import { FormsModule } from '@angular/forms';
 import { DropdownDirective } from './shared/dropdown.directive';
+import { ReceipeStartComponent } from './receipes/receipe-start/receipe-start.component';
+import { ReceipeEditComponent } from './recepies/receipe-edit/receipe-edit.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { DropdownDirective } from './shared/dropdown.directive';
     ReceipeItemComponent,
     ShoppingListComponent,
     ShoppingEditComponent,
-    DropdownDirective
+    DropdownDirective,
+    ReceipeStartComponent,
+    ReceipeEditComponent
   ],
   imports: [
     BrowserModule,

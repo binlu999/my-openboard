@@ -33,6 +33,10 @@ export class ReceipeService{
         return this.receipes.slice();
     }
 
+    getReceipe(index:number){
+        return this.receipes[index];
+    }
+
     addIntegredentsToShoppingList(ingredents:Ingredient[]){
         this.shoppingListServive.addIngredients(ingredents);
     }

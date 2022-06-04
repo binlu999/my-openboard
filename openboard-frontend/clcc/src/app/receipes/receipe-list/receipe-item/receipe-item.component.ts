@@ -9,13 +9,10 @@ import { ReceipeService } from '../../receipe.service';
 })
 export class ReceipeItemComponent implements OnInit {
   @Input() receipe:Receipe;
+  @Input() index:number;
 
   constructor(private receipeService:ReceipeService) { }
 
   ngOnInit(): void {
-  }
-
-  onSelected(){
-    this.receipeService.selectedReceipe.emit(this.receipe);
   }
 }
