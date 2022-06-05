@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-receipe-edit',
@@ -6,10 +7,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./receipe-edit.component.css']
 })
 export class ReceipeEditComponent implements OnInit {
-
-  constructor() { }
+  id:number;
+  editMode=false;
+  constructor(private route:ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.route.params.subscribe(
+      (params:Params)=>{
+        this.id=+params['id'];
+        this.editMode=params['id']!=null;
+      }
+    )
   }
 
 }
