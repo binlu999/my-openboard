@@ -105,3 +105,4 @@ dist
 */.angular/*
 *.pack
 *.old
+*.pack
