@@ -1,10 +1,11 @@
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 import { ReceipesComponent } from './receipes/receipes.component';
 import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
+import { RouterModule, Routes } from "@angular/router"
 import { ReceipeStartComponent } from './receipes/receipe-start/receipe-start.component';
 import { ReceipeDetailComponent } from './receipes/receipe-detail/receipe-detail.component';
-import { ReceipeEditComponent } from './recepies/receipe-edit/receipe-edit.component';
+import { ReceipeEditComponent } from './receipes/receipe-edit/receipe-edit.component';
+
 
 const appRoutes:Routes=[
     {path:'', redirectTo:'receipes', pathMatch:'full'},
