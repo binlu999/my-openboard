@@ -6,7 +6,7 @@ import { Receipe } from "./receipe.model";
 
 @Injectable()
 export class ReceipeService{
-
+    receipeChanges=new Subject<Receipe[]>();
     selectedReceipe = new Subject<Receipe>();
     
     constructor(private shoppingListServive:ShoppingListService){
@@ -42,4 +42,18 @@ export class ReceipeService{
         this.shoppingListServive.addIngredients(ingredents);
     }
 
+    addReceipe(receipe:Receipe){
+        this.receipes.push(receipe);
+        this.receipeChanges.next(this.receipes.slice());
+    }
+
+    updateReceipe(index:number, receipe:Receipe){
+        this.receipes[index]=receipe;
+        this.receipeChanges.next(this.receipes.slice());
+    }
+
+    deleteReceipe(index:number){
+        this.receipes.splice(index,1);
+        this.receipeChanges.next(this.receipes.slice());
+    }
 }

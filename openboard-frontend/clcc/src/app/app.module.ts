@@ -14,7 +14,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DropdownDirective } from './shared/dropdown.directive';
 import { ReceipeStartComponent } from './receipes/receipe-start/receipe-start.component';
 import { ReceipeEditComponent } from './receipes/receipe-edit/receipe-edit.component';
-
+import {ReceipeService} from './receipes/receipe.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,7 +35,7 @@ import { ReceipeEditComponent } from './receipes/receipe-edit/receipe-edit.compo
     AppRoutingModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [ReceipeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

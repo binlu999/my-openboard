@@ -6,7 +6,9 @@
                 <button 
                     class="btn btn-success"
                     [disabled]="!receipeForm.valid">Save</button>
-                <button class="btn btn-danger">Cancel</button>
+                <button 
+                    class="btn btn-danger" 
+                    (click)="onCancel()">Cancel</button>
             </div>
         </div>
         <div class="row">
@@ -45,13 +47,14 @@
                         id="imagePath"
                         class="form-control"
                         formControlName="imagePath"
+                        #imagePathRef
                         >
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-xs-12">
-                <img src="" class="img-responsive">
+                <img [src]="imagePathRef.value" class="img-responsive">
             </div>
         </div>
         <div class="row">
@@ -75,7 +78,10 @@
                             formControlName="amount">
                     </div>
                     <div class="col-xs-2">
-                        <button class="btn btn-danger">X</button>
+                        <button 
+                            type="button" 
+                            class="btn btn-danger"
+                            (click)="onDeleteIngredient(i)">X</button>
                     </div>
                 </div>
 

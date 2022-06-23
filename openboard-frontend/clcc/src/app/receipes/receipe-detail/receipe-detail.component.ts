@@ -31,4 +31,9 @@ export class ReceipeDetailComponent implements OnInit {
     //this.router.navigate(['../',this.id,'edit'],{relativeTo:this.route});
   }
 
+  onDelete(){
+    this.receipService.deleteReceipe(this.id);
+    this.router.navigate(['receipes']);
+  }
+
 }

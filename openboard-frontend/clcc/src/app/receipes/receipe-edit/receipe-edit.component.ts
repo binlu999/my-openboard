@@ -1,7 +1,7 @@
 import { ReceipeService } from './../receipe.service';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 @Component({
   selector: 'app-receipe-edit',
@@ -13,7 +13,9 @@ export class ReceipeEditComponent implements OnInit {
   editMode=false;
   receipeForm:FormGroup;
 
-  constructor(private route:ActivatedRoute, private receipeService:ReceipeService) { }
+  constructor(private route:ActivatedRoute, 
+    private receipeService:ReceipeService,
+    private router:Router) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(
@@ -63,10 +65,16 @@ export class ReceipeEditComponent implements OnInit {
     return (<FormArray>this.receipeForm.get('ingredients')).controls;
   }
   onSubmit(){
-    console.log(this.receipeForm);
+    console.log(this.receipeForm.value);
+    if(this.editMode){
+      this.receipeService.updateReceipe(this.id,this.receipeForm.value);
+    }else{
+      this.receipeService.addReceipe(this.receipeForm.value);
+    }
+    this.onCancel();
   }
   onAddIngredient(){
-    this.controls.push(
+    (<FormArray>this.receipeForm.get('ingredients')).push(
       new FormGroup({
         'name':new FormControl(null,Validators.required),
         'amount':new FormControl(null,[
@@ -76,5 +84,12 @@ export class ReceipeEditComponent implements OnInit {
       })
     )
   }
-
+  onCancel(){
+    this.router.navigate(['../'],{relativeTo:this.route});
+  }
+  onDeleteIngredient(index:number){
+    (<FormArray>this.receipeForm.get('ingredients')).removeAt(index);
+    //Clear all
+   // (<FormArray>this.receipeForm.get('ingredients')).clear();
+  }
 }
