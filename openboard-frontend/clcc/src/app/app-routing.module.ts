@@ -6,6 +6,7 @@ import { ReceipeStartComponent } from './receipes/receipe-start/receipe-start.co
 import { ReceipeDetailComponent } from './receipes/receipe-detail/receipe-detail.component';
 import { ReceipeEditComponent } from './receipes/receipe-edit/receipe-edit.component';
 import { ReceipeResolverService } from './receipes/receipe-resolver.service';
+import { AuthComponent } from './auth/auth.component';
 
 
 const appRoutes:Routes=[
@@ -20,7 +21,8 @@ const appRoutes:Routes=[
             component:ReceipeEditComponent,
             resolve:[ReceipeResolverService]}
     ]},
-    {path:'shopping-list',component:ShoppingListComponent}
+    {path:'shopping-list',component:ShoppingListComponent},
+    {path:'auth',component:AuthComponent}
 ];
 @NgModule({
     imports:[RouterModule.forRoot(appRoutes)],

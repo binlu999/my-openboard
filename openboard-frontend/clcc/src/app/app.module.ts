@@ -16,6 +16,7 @@ import { DropdownDirective } from './shared/dropdown.directive';
 import { ReceipeStartComponent } from './receipes/receipe-start/receipe-start.component';
 import { ReceipeEditComponent } from './receipes/receipe-edit/receipe-edit.component';
 import {ReceipeService} from './receipes/receipe.service';
+import { AuthComponent } from './auth/auth.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,7 +29,8 @@ import {ReceipeService} from './receipes/receipe.service';
     ShoppingEditComponent,
     DropdownDirective,
     ReceipeStartComponent,
-    ReceipeEditComponent
+    ReceipeEditComponent,
+    AuthComponent
   ],
   imports: [
     BrowserModule,
