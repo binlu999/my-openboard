@@ -15,6 +15,6 @@ export class HeaderComponent{
         this.dataStorageService.saveReceipeData();
     }
     onFetchData(){
-        this.dataStorageService.fetchReceipeData();
+        this.dataStorageService.fetchReceipeData().subscribe();
     }
 }

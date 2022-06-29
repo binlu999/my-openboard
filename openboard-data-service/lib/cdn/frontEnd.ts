@@ -109,8 +109,14 @@ class FrontEnd{
             errorResponses:[
                 {
                     httpStatus:403,
-                    responseHttpStatus:403,
-                    responsePagePath:"/error.html",
+                    responseHttpStatus:200,
+                    responsePagePath:"/index.html",
+                    ttl:Duration.minutes(30)
+                },
+                {
+                    httpStatus:404,
+                    responseHttpStatus:200,
+                    responsePagePath:"/index.html",
                     ttl:Duration.minutes(30)
                 }
             ],

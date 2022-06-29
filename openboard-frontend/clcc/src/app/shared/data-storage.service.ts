@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { map as mapo } from "rxjs-compat/operator/map";
-import { map } from "rxjs/operators";
+import { map, tap } from "rxjs/operators";
 import { Receipe } from "../receipes/receipe.model";
 import { ReceipeService } from "../receipes/receipe.service";
 
@@ -25,18 +25,26 @@ export class DataStorageService {
     }
 
     fetchReceipeData(){
-        this.http.get<Receipe[]>(this.DATA_STORE_URL)
+        return this.http.get<Receipe[]>(this.DATA_STORE_URL)
         .pipe(map(receipes=>{
             return receipes.map(
                 receipe=>{
                     return { ...receipe, ingredients:receipe.ingredients?receipe.ingredients:[]}
                 }
                 )
-        }))
+        }),
+        tap(
+            receipes=>{
+                this.receipeService.setReipes(receipes);
+            }
+        )
+        );
+        /*
         .subscribe(
             (response)=>{
                 this.receipeService.setReipes(response);
             }
         );
+        */
     }
 }
