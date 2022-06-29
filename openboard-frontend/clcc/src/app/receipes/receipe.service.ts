@@ -8,10 +8,10 @@ import { Receipe } from "./receipe.model";
 export class ReceipeService{
     receipeChanges=new Subject<Receipe[]>();
     selectedReceipe = new Subject<Receipe>();
-    
-    constructor(private shoppingListServive:ShoppingListService){
+        constructor(private shoppingListServive:ShoppingListService){
 
     }
+    /*
     private receipes:Receipe[]=[
         new Receipe(
             'Sample Receipe',
@@ -29,7 +29,13 @@ export class ReceipeService{
             new Ingredient('Sugar',6)
         ])
       ];
-
+      */
+    private receipes:Receipe[]=[];
+    
+    setReipes(receipes:Receipe[]){
+        this.receipes=receipes;
+        this.receipeChanges.next(this.receipes.slice());
+    }
     getReceipes(){
         return this.receipes.slice();
     }
