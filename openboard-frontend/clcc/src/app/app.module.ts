@@ -17,6 +17,7 @@ import { ReceipeStartComponent } from './receipes/receipe-start/receipe-start.co
 import { ReceipeEditComponent } from './receipes/receipe-edit/receipe-edit.component';
 import {ReceipeService} from './receipes/receipe.service';
 import { AuthComponent } from './auth/auth.component';
+import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,7 +31,8 @@ import { AuthComponent } from './auth/auth.component';
     DropdownDirective,
     ReceipeStartComponent,
     ReceipeEditComponent,
-    AuthComponent
+    AuthComponent,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,
