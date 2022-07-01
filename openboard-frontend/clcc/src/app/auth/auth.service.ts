@@ -1,7 +1,8 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Subject, throwError } from 'rxjs';
+import { catchError,tap } from 'rxjs/operators';
+import { User } from './user.model';
 
 export interface AuthResponseData {
     idToken: string,
@@ -19,6 +20,8 @@ export class AuthService {
     AUTH_SIGNUP_URL = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=';
     AUTH_SIGNIN_URL='https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=';
     AUTH_API_KEY='AIzaSyCHZLEmFGsPJ_ZcMOpxZW0k0mWJUUsjlXU';
+
+    user:Subject<User>=new Subject<User>();
     constructor(private http: HttpClient) {
     };
 
@@ -30,7 +33,16 @@ export class AuthService {
                 password: password,
                 returnSecureToken: true
             }
-        ).pipe(catchError(this.handleError));
+        ).pipe(
+            catchError(this.handleError),
+            tap(respData=>{
+                this.handleAuthencation(
+                    respData.email,
+                    respData.localId,
+                    respData.idToken, 
+                    +respData.expiresIn);
+            })
+            );
     }
 
     signin(email:string,password:string){
@@ -41,7 +53,22 @@ export class AuthService {
                 password:password,
                 returnSecureToken:true
             }
-        ).pipe(catchError(this.handleError));
+        ).pipe(
+            catchError(this.handleError),
+            tap(respData=>{
+                this.handleAuthencation(
+                    respData.email,
+                    respData.localId,
+                    respData.idToken, 
+                    +respData.expiresIn);
+            })
+        );
+    }
+
+    handleAuthencation(email:string,id:string,token:string,expiresIn:number){
+        const tokenExpirationDate=new Date((new Date()).getTime()+expiresIn*1000);
+        const user=new User(email,id,token,tokenExpirationDate);
+        this.user.next(user);
     }
 
     handleError(errorResp:HttpErrorResponse){
