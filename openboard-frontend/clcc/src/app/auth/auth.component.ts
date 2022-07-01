@@ -52,4 +52,8 @@ export class AuthComponent implements OnInit {
 
     authForm.reset();
   }
+
+  closeError(){
+    this.error=null;
+  }
 }
