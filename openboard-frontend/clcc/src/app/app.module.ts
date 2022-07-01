@@ -1,7 +1,7 @@
 import { AppRoutingModule } from './app-routing.module';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule} from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -18,6 +18,7 @@ import { ReceipeEditComponent } from './receipes/receipe-edit/receipe-edit.compo
 import {ReceipeService} from './receipes/receipe.service';
 import { AuthComponent } from './auth/auth.component';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
+import { AuthInterceptorService } from './auth/auth.intercepter';
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,9 +40,16 @@ import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinne
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+
   ],
-  providers: [ReceipeService],
+  providers: [ReceipeService,
+  {
+    provide:HTTP_INTERCEPTORS,
+    useClass:AuthInterceptorService,
+    multi:true
+  }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

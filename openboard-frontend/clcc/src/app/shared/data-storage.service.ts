@@ -39,12 +39,32 @@ export class DataStorageService {
             }
         )
         );
-        /*
-        .subscribe(
-            (response)=>{
-                this.receipeService.setReipes(response);
-            }
-        );
-        */
+
     }
+/*
+    fetchReceipeData(){
+        return this.authService.user.pipe(
+            take(1),
+            exhaustMap(user =>{
+                return this.http.get<Receipe[]>(this.DATA_STORE_URL,
+                    {
+                        params:new HttpParams().set('auth',user.token)
+                    })
+            }),
+            map(receipes=>{
+            return receipes.map(
+                receipe=>{
+                    return { ...receipe, ingredients:receipe.ingredients?receipe.ingredients:[]}
+                }
+                )
+        }),
+        tap(
+            receipes=>{
+                this.receipeService.setReipes(receipes);
+            }
+        )
+        );
+    }
+
+    */
 }

@@ -1,6 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject, throwError } from 'rxjs';
+import { Router } from '@angular/router';
+import { BehaviorSubject, Subject, throwError } from 'rxjs';
 import { catchError,tap } from 'rxjs/operators';
 import { User } from './user.model';
 
@@ -20,11 +21,49 @@ export class AuthService {
     AUTH_SIGNUP_URL = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=';
     AUTH_SIGNIN_URL='https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=';
     AUTH_API_KEY='AIzaSyCHZLEmFGsPJ_ZcMOpxZW0k0mWJUUsjlXU';
+    SEC_TOKEN_NAME='clcc-openboard-user-data';
 
-    user:Subject<User>=new Subject<User>();
-    constructor(private http: HttpClient) {
+    //user:Subject<User>=new Subject<User>();
+    user = new BehaviorSubject<User>(null);
+    tokenExpirationTimer:any;
+
+    constructor(private http: HttpClient,private router:Router) {
     };
 
+    autoLogin(){
+        const user:{
+            email:string,
+            Id:string,
+            _token:string,
+            _tokenExpirationDate:string
+            } = JSON.parse(localStorage.getItem(this.SEC_TOKEN_NAME));
+        
+        if(!user){
+            return;
+        }
+
+        const loggedInUser=new User(user.email,user.Id,user._token,new Date(user._tokenExpirationDate));
+        if(loggedInUser.token){
+            this.user.next(loggedInUser);
+            const expiredIn = (new Date(user._tokenExpirationDate)).getTime()-(new Date()).getTime();
+            this.autoLogout(expiredIn);
+        }
+    }
+    logout(){
+        this.user.next(null);
+        this.router.navigate(['/auth']);
+        localStorage.removeItem(this.SEC_TOKEN_NAME);
+        if(this.tokenExpirationTimer){
+            clearTimeout(this.tokenExpirationTimer);
+        }
+        this.tokenExpirationTimer=null;
+    }
+    autoLogout(expirationDuration:number){
+        this.tokenExpirationTimer=setTimeout(() => {
+            this.logout();
+        }, expirationDuration);
+
+    }
     signup(email: string, password: string) {
         return this.http.post<AuthResponseData>(
             this.AUTH_SIGNUP_URL+this.AUTH_API_KEY,
@@ -69,6 +108,8 @@ export class AuthService {
         const tokenExpirationDate=new Date((new Date()).getTime()+expiresIn*1000);
         const user=new User(email,id,token,tokenExpirationDate);
         this.user.next(user);
+        localStorage.setItem(this.SEC_TOKEN_NAME,JSON.stringify(user));
+        this.autoLogout(expiresIn*1000);
     }
 
     handleError(errorResp:HttpErrorResponse){

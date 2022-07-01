@@ -29,6 +29,9 @@ export class HeaderComponent implements OnInit, OnDestroy{
     onFetchData(){
         this.dataStorageService.fetchReceipeData().subscribe();
     }
+    onLogout(){
+        this.authService.logout();
+    }
     ngOnDestroy(): void {
         throw new Error("Method not implemented.");
     }

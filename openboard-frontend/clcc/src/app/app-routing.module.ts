@@ -7,11 +7,15 @@ import { ReceipeDetailComponent } from './receipes/receipe-detail/receipe-detail
 import { ReceipeEditComponent } from './receipes/receipe-edit/receipe-edit.component';
 import { ReceipeResolverService } from './receipes/receipe-resolver.service';
 import { AuthComponent } from './auth/auth.component';
+import { AuthGuard } from './auth/auth.gurad';
 
 
 const appRoutes:Routes=[
     {path:'', redirectTo:'receipes', pathMatch:'full'},
-    {path: 'receipes', component:ReceipesComponent, children:[
+    {path: 'receipes', 
+        component:ReceipesComponent, 
+        canActivate:[AuthGuard],
+        children:[
         {path:'',component:ReceipeStartComponent},
         {path:'new',component:ReceipeEditComponent},
         {path:':id',
