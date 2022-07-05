@@ -6,6 +6,7 @@ import { ReceipeDetailComponent } from "./receipe-detail/receipe-detail.componen
 import { ReceipeEditComponent } from "./receipe-edit/receipe-edit.component";
 import { ReceipeItemComponent } from "./receipe-list/receipe-item/receipe-item.component";
 import { ReceipeListComponent } from "./receipe-list/receipe-list.component";
+import { ReceipeRoutingModule } from "./receipe-routing.module";
 import { ReceipeStartComponent } from "./receipe-start/receipe-start.component";
 import { ReceipesComponent } from "./receipes.component";
 
@@ -21,7 +22,8 @@ import { ReceipesComponent } from "./receipes.component";
     imports:[
         RouterModule,
         CommonModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        ReceipeRoutingModule
     ],
     exports:[
         ReceipesComponent,
