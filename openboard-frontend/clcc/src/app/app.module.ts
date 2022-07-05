@@ -37,7 +37,6 @@ import { ReceipeModule } from './receipes/receipe.module';
     ReactiveFormsModule,
     AppRoutingModule,
     ReceipeModule
-
   ],
   providers: [ReceipeService,
   {
