@@ -8,7 +8,7 @@ import { ReceipeStartComponent } from "./receipe-start/receipe-start.component";
 import { ReceipesComponent } from "./receipes.component";
 
 const routes:Routes=[
-    {path: 'receipes', 
+    {path: '', 
         component:ReceipesComponent, 
         canActivate:[AuthGuard],
         children:[

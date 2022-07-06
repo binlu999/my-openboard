@@ -7,16 +7,14 @@ import { HttpClientModule} from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-import { AuthComponent } from './auth/auth.component';
 import { ReceipeModule } from './receipes/receipe.module';
 import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core.module';
+import { AuthModule } from './auth/auth.module';
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,   
-    AuthComponent
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -24,10 +22,11 @@ import { CoreModule } from './core.module';
     HttpClientModule,
     ReactiveFormsModule,
     AppRoutingModule,
-    ReceipeModule,
+
     ShoppingListModule,
     SharedModule,
-    CoreModule
+    CoreModule,
+    AuthModule
   ],
   bootstrap: [AppComponent]
 })

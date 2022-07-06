@@ -6,7 +6,9 @@ import { AuthComponent } from './auth/auth.component';
 
 const appRoutes:Routes=[
     {path:'', redirectTo:'receipes', pathMatch:'full'},
-    {path:'auth',component:AuthComponent}
+    {path:'receipes', loadChildren: () => import('./receipes/receipe.module').then(
+        m=> m.ReceipeModule
+    )}
 ];
 @NgModule({
     imports:[RouterModule.forRoot(appRoutes)],
