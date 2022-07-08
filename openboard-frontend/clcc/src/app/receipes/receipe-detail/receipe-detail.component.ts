@@ -23,6 +23,7 @@ export class ReceipeDetailComponent implements OnInit {
     }
 
   addIngredientsToShoppingLIst(){
+    console.log('Add to SL');
     this.receipService.addIntegredentsToShoppingList(this.receipe.ingredients);
   }
 

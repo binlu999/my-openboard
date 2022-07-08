@@ -1,15 +1,21 @@
 import { EventEmitter, Injectable } from "@angular/core";
+import { Store } from "@ngrx/store";
 import { Subject } from "rxjs";
 import { Ingredient } from "../shared/ingredient.model";
 import { ShoppingListService } from "../shopping-list/shopping-list.service";
+import { AddIngredients } from "../shopping-list/store/shopping-list.action";
 import { Receipe } from "./receipe.model";
 
-@Injectable()
+@Injectable({
+    providedIn:'root'
+})
 export class ReceipeService{
     receipeChanges=new Subject<Receipe[]>();
     selectedReceipe = new Subject<Receipe>();
-        constructor(private shoppingListServive:ShoppingListService){
-
+    
+    constructor(private shoppingListServive:ShoppingListService,
+       private store:Store<{shoppingList:{ingredients:Ingredient[]}}>
+       ){
     }
     /*
     private receipes:Receipe[]=[
@@ -45,7 +51,8 @@ export class ReceipeService{
     }
 
     addIntegredentsToShoppingList(ingredents:Ingredient[]){
-        this.shoppingListServive.addIngredients(ingredents);
+        //this.shoppingListServive.addIngredients(ingredents);
+        this.store.dispatch(new AddIngredients(ingredents));
     }
 
     addReceipe(receipe:Receipe){
