@@ -5,6 +5,7 @@ import { Ingredient } from "../shared/ingredient.model";
 import { ShoppingListService } from "../shopping-list/shopping-list.service";
 import { AddIngredients } from "../shopping-list/store/shopping-list.action";
 import { Receipe } from "./receipe.model";
+import * as fromShoppingList from '../shopping-list/store/shopping-list.reducer';
 
 @Injectable({
     providedIn:'root'
@@ -14,7 +15,7 @@ export class ReceipeService{
     selectedReceipe = new Subject<Receipe>();
     
     constructor(private shoppingListServive:ShoppingListService,
-       private store:Store<{shoppingList:{ingredients:Ingredient[]}}>
+       private store:Store<fromShoppingList.AppState>
        ){
     }
     /*
