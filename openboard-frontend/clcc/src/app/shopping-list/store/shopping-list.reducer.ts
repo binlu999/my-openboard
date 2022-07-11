@@ -1,11 +1,7 @@
-import { Action } from '@ngrx/store';
 import { Ingredient } from '../../shared/ingredient.model';
 import * as ShoppingListActions from './shopping-list.action';
 
-export interface AppState {
-    shoppingList:ShoppingListState
-}
-interface ShoppingListState {
+export interface ShoppingListState {
     ingredients:Ingredient[];
     editedIngredient:Ingredient;
     editedIngredientIndex:number
@@ -32,22 +28,24 @@ export function shoppingListReducer(
                 ingredients:[...state.ingredients,...action.payload]
             }
         case ShoppingListActions.UPDATE_INGREDITENT:
-            const ingredient=state.ingredients[action.payload.index];
+            const ingredient=state.ingredients[state.editedIngredientIndex];
             const ingredients=[...state.ingredients];
             const updatedIngredent={
                 ...ingredient,
-                ...action.payload.ingredient
+                ...action.payload
             }
-            ingredients[action.payload.index]=updatedIngredent;
+            ingredients[state.editedIngredientIndex]=updatedIngredent;
             return {
                 ...state,
-                ingredients:ingredients
+                ingredients:ingredients,
+                editedIngredient:null,
+                editedIngredientIndex:-1
             }
         case ShoppingListActions.DELETE_INGREDIENT:
             return {
                 ...state,
                 ingredients:[...state.ingredients].filter((ingredient,index)=>{
-                    return index!==action.payload;
+                    return index!==state.editedIngredientIndex;
                 })
             }
         case ShoppingListActions.START_EDIT:

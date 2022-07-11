@@ -2,10 +2,9 @@ import { Subscription } from 'rxjs';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Ingredient } from 'src/app/shared/ingredient.model';
-import { ShoppingListService } from '../shopping-list.service';
 import { Store } from '@ngrx/store';
 import * as ShoppingListActions from '../store/shopping-list.action';
-import * as fromShoppingList from '../store/shopping-list.reducer';
+import { AppState } from 'src/app/store/app.reducer';
 
 @Component({
   selector: 'app-shopping-edit',
@@ -19,8 +18,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   editedIngredientIndex:number;
   editIngredient:Ingredient;
 
-  constructor(private shoppingListService:ShoppingListService,
-    private store:Store<fromShoppingList.AppState>) { }
+  constructor(private store:Store<AppState>) { }
   
   ngOnInit(): void {
     this.subscription = this.store.select('shoppingList').subscribe(
@@ -46,11 +44,9 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
     const newIngredient=new Ingredient(value.name,
       value.amount);
       if(this.editMode){
-        //this.shoppingListService.updateIngredient(this.editedIngredientIndex,newIngredient);
-        this.store.dispatch(new ShoppingListActions.UpdateIngrediemt({index:this.editedIngredientIndex,ingredient:newIngredient}));
+        this.store.dispatch(new ShoppingListActions.UpdateIngrediemt(newIngredient));
       }else{
-        //this.store.dispatch();
-        this.store.dispatch(new ShoppingListActions.AddIngredient(newIngredient));
+         this.store.dispatch(new ShoppingListActions.AddIngredient(newIngredient));
       }
 
       this.onClear();
@@ -58,7 +54,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   }
 
   onDelete(){
-    this.store.dispatch(new ShoppingListActions.DeleteIngredient(this.editedIngredientIndex));
+    this.store.dispatch(new ShoppingListActions.DeleteIngredient());
 
     this.onClear();
   }
