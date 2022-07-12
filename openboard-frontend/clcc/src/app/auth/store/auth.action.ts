@@ -1,5 +1,6 @@
 import { Action } from "@ngrx/store";
 
+export const AUTH_LOGIN_START='AUTH_LOGIN_START';
 export const AUTH_LOGIN='AUTH_LOGIN';
 export const AUTH_LOGOUT='AUTH_LOGOUT';
 
