@@ -1,15 +1,19 @@
 import { User } from "../user.model";
-import { AuthActions, AUTH_LOGIN, AUTH_LOGOUT } from "./auth.action";
+import { AuthActions, AUTH_LOGIN, AUTH_LOGIN_FAIL, AUTH_LOGIN_START, AUTH_LOGOUT } from "./auth.action";
 
 export interface AuthState {
-    user:User
+    user:User,
+    authError:string,
+    isLoading:boolean
 }
 
 const initialState :AuthState ={
-    user:null
+    user:null,
+    authError:null,
+    isLoading:false
 }
 
-export function authReducer(state=initialState, action:AuthActions){
+export function authReducer(state=initialState, action:AuthActions):AuthState{
     switch(action.type) {
         case AUTH_LOGIN:
             const user = new User (
@@ -20,13 +24,30 @@ export function authReducer(state=initialState, action:AuthActions){
             );
             return {
                 ...state,
-                user:user
+                user:user,
+                authError:null,
+                isLoading:false
             };
 
         case AUTH_LOGOUT:
             return {
                 ...state,
-                user:null            
+                user:null,
+                authError:null,
+                isLoading:false            
+            }
+        case AUTH_LOGIN_START:
+            return {
+                ...state,
+                authError:null,
+                isLoading:true
+            }
+        case AUTH_LOGIN_FAIL:
+            return {
+                ...state,
+                user:null,
+                authError:action.payload,
+                isLoading:false
             }
         default:
             return state;
