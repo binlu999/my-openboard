@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { BehaviorSubject, Subject, throwError } from 'rxjs';
 import { catchError,tap } from 'rxjs/operators';
 import { AppState } from '../store/app.reducer';
-import { AuthLogin, AuthLogout } from './store/auth.action';
+import { AuthAuthencated, AuthLogout } from './store/auth.action';
 import { User } from './user.model';
 
 export interface AuthResponseData {
@@ -49,7 +49,7 @@ export class AuthService {
         const loggedInUser=new User(user.email,user.Id,user._token,new Date(user._tokenExpirationDate));
         if(loggedInUser.token){
             //this.user.next(loggedInUser);
-            this.store.dispatch(new AuthLogin({
+            this.store.dispatch(new AuthAuthencated({
                     email: loggedInUser.email,
                     id: loggedInUser.Id,
                     token: loggedInUser.token,
@@ -120,7 +120,7 @@ export class AuthService {
         const tokenExpirationDate=new Date((new Date()).getTime()+expiresIn*1000);
         const user=new User(email,id,token,tokenExpirationDate);
         //this.user.next(user);
-        this.store.dispatch(new AuthLogin( {
+        this.store.dispatch(new AuthAuthencated( {
             email:email,
             id:id,
             token:token,

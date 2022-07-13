@@ -1,12 +1,14 @@
 import { Action } from "@ngrx/store";
 
 export const AUTH_LOGIN_START='AUTH_LOGIN_START';
-export const AUTH_LOGIN='AUTH_LOGIN';
+export const AUTH_SIGNUP_START='AUTH_SIGNUP_START';
+export const AUTH_AUTHENCATED='AUTH_AUTHENCATED';
+export const AUTH_AUTHENCATE_FAIL='AUTH_AUTHENCATE_FAIL';
 export const AUTH_LOGOUT='AUTH_LOGOUT';
-export const AUTH_LOGIN_FAIL='AUTH_LOGIN_FAIL';
+export const AUTH_CLEAR_ERROR='AUTH_CLEAR_ERROR';
 
-export class AuthLogin implements Action{
-    readonly type=AUTH_LOGIN;
+export class AuthAuthencated implements Action{
+    readonly type=AUTH_AUTHENCATED;
     constructor(public payload:
         {email:string,
         id:string,
@@ -23,8 +25,18 @@ export class AuthLoginStart implements Action{
     constructor(public payload:{email:string, password:string}){}
 }
 
-export class AuthLoginFail implements Action{
-    readonly type = AUTH_LOGIN_FAIL;
+export class AuthAuthencateFail implements Action{
+    readonly type = AUTH_AUTHENCATE_FAIL;
     constructor(public payload:string){}
 }
-export type AuthActions=AuthLogin|AuthLogout|AuthLoginStart|AuthLoginFail;
+
+export class AuthSignupStart implements Action{
+    readonly type=AUTH_SIGNUP_START;
+    constructor(public payload:{email:string, password:string}){}
+}
+
+export class AuthClearError implements Action {
+    readonly type = AUTH_CLEAR_ERROR;
+}
+
+export type AuthActions=AuthAuthencated|AuthLogout|AuthLoginStart|AuthAuthencateFail|AuthSignupStart|AuthClearError;
