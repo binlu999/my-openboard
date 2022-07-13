@@ -30,6 +30,7 @@ export function authReducer(state=initialState, action:AuthActions):AuthState{
             };
 
         case AUTH_LOGOUT:
+            console.log('reducer')
             return {
                 ...state,
                 user:null,

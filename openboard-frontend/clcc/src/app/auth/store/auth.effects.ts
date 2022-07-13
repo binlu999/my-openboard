@@ -115,7 +115,8 @@ export class AuthEffects {
     authRedirect = this.actions$.pipe(
         ofType(AUTH_AUTHENCATED,AUTH_LOGOUT),
         tap(() => {
-            this.router.navigate(['/'])
+            console.log('effect');
+            this.router.navigate(['/']);
         })
     );
 

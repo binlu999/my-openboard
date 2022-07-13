@@ -18,7 +18,6 @@ export class HeaderComponent implements OnInit, OnDestroy{
     isAuthencated=false;
 
     constructor(private dataStorageService:DataStorageService, 
-        private authService:AuthService,
         private store:Store<AppState>){
     }
 
