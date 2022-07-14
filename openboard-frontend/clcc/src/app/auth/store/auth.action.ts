@@ -1,3 +1,4 @@
+import { Actions } from '@ngrx/effects';
 import { Action } from "@ngrx/store";
 
 export const AUTH_LOGIN_START='AUTH_LOGIN_START';
@@ -6,6 +7,7 @@ export const AUTH_AUTHENCATED='AUTH_AUTHENCATED';
 export const AUTH_AUTHENCATE_FAIL='AUTH_AUTHENCATE_FAIL';
 export const AUTH_LOGOUT='AUTH_LOGOUT';
 export const AUTH_CLEAR_ERROR='AUTH_CLEAR_ERROR';
+export const AUTH_AUTO_LOGIN='AUTH_AUTO_LOGOUT';
 
 export class AuthAuthencated implements Action{
     readonly type=AUTH_AUTHENCATED;
@@ -39,4 +41,14 @@ export class AuthClearError implements Action {
     readonly type = AUTH_CLEAR_ERROR;
 }
 
-export type AuthActions=AuthAuthencated|AuthLogout|AuthLoginStart|AuthAuthencateFail|AuthSignupStart|AuthClearError;
+export class AuthAutoLogin implements Action{
+    readonly type = AUTH_AUTO_LOGIN;
+}
+
+export type AuthActions=AuthAuthencated|
+    AuthLogout|
+    AuthLoginStart|
+    AuthAuthencateFail|
+    AuthSignupStart|
+    AuthClearError|
+    AuthAutoLogin;

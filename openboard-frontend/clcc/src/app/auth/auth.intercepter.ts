@@ -4,13 +4,11 @@ import { Store } from "@ngrx/store";
 import { Observable } from "rxjs";
 import { exhaustMap, map, take } from "rxjs/operators";
 import { AppState } from "../store/app.reducer";
-import { AuthService } from "./auth.service";
 
 @Injectable()
 export class AuthInterceptorService implements HttpInterceptor{
     
-    constructor(private authService:AuthService, 
-        private store:Store<AppState>){
+    constructor(private store:Store<AppState>){
 
     }
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {

@@ -16,6 +16,7 @@ const initialState :AuthState ={
 export function authReducer(state=initialState, action:AuthActions):AuthState{
     switch(action.type) {
         case AUTH_AUTHENCATED:
+            console.log(action.payload);
             const user = new User (
                 action.payload.email,
                 action.payload.id,
