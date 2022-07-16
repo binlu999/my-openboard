@@ -13,6 +13,8 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from './auth/store/auth.effects';
 import { environment } from 'src/environments/environment';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
+import { ReceipeEffects } from './receipes/store/receipe.effects';
 
 @NgModule({
   declarations: [
@@ -26,8 +28,9 @@ import { environment } from 'src/environments/environment';
     ReactiveFormsModule,
     AppRoutingModule,
     StoreModule.forRoot(appReducer),
-    EffectsModule.forRoot([AuthEffects]),
+    EffectsModule.forRoot([AuthEffects,ReceipeEffects]),
     StoreDevtoolsModule.instrument({logOnly:environment.production}),
+    StoreRouterConnectingModule.forRoot(),
     SharedModule,
     CoreModule
   ],

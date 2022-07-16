@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { map, switchMap } from 'rxjs/operators';
+import { AddIngredients } from 'src/app/shopping-list/store/shopping-list.action';
+import { AppState } from 'src/app/store/app.reducer';
 import { Receipe } from '../receipe.model';
-import { ReceipeService } from '../receipe.service';
+import { ReceipeDeleteReceipe } from '../store/receipe.actions';
 
 @Component({
   selector: 'app-receipe-detail',
@@ -9,31 +13,46 @@ import { ReceipeService } from '../receipe.service';
   styleUrls: ['./receipe-detail.component.css']
 })
 export class ReceipeDetailComponent implements OnInit {
-  receipe:Receipe;
-  id:number;
-  constructor(private receipService:ReceipeService,private route:ActivatedRoute, private router:Router) { }
+  receipe: Receipe;
+  id: number;
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private store: Store<AppState>
+    ) { }
 
   ngOnInit(): void {
-    this.route.params.subscribe(
-      (param:Params)=>{
-        this.id=+param['id'];
-        this.receipe=this.receipService.getReceipe(this.id);
+    this.route.params.pipe(
+      map((param: Params) => {
+        return +param['id'];
+      }),
+      switchMap(id => {
+        this.id = id;
+        return this.store.select('receipes');
+      }),
+      map(receipState => {
+        return receipState.receipes.find((receipe, index) => {
+          return this.id === index
+        })
+      })
+    ).subscribe(
+      receipe => {
+        this.receipe = receipe;
       }
     )
-    }
+  }
 
-  addIngredientsToShoppingLIst(){
+  addIngredientsToShoppingLIst() {
     console.log('Add to SL');
-    this.receipService.addIntegredentsToShoppingList(this.receipe.ingredients);
+    this.store.dispatch(new AddIngredients(this.receipe.ingredients));
   }
 
-  onEdit(){
-    this.router.navigate(['edit'],{relativeTo:this.route});
-    //this.router.navigate(['../',this.id,'edit'],{relativeTo:this.route});
+  onEdit() {
+    this.router.navigate(['edit'], { relativeTo: this.route });
   }
 
-  onDelete(){
-    this.receipService.deleteReceipe(this.id);
+  onDelete() {
+    this.store.dispatch(new ReceipeDeleteReceipe(this.id));
     this.router.navigate(['receipes']);
   }
 

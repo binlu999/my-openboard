@@ -4,13 +4,15 @@ import { AuthActions, AUTH_AUTHENCATED, AUTH_AUTHENCATE_FAIL, AUTH_CLEAR_ERROR, 
 export interface AuthState {
     user:User,
     authError:string,
-    isLoading:boolean
+    isLoading:boolean,
+    redirect:boolean
 }
 
 const initialState :AuthState ={
     user:null,
     authError:null,
-    isLoading:false
+    isLoading:false,
+    redirect:false
 }
 
 export function authReducer(state=initialState, action:AuthActions):AuthState{

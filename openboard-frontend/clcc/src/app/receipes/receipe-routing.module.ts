@@ -11,6 +11,7 @@ const routes:Routes=[
     {path: '', 
         component:ReceipesComponent, 
         canActivate:[AuthGuard],
+        resolve:[ReceipeResolverService],
         children:[
         {path:'',component:ReceipeStartComponent},
         {path:'new',component:ReceipeEditComponent},

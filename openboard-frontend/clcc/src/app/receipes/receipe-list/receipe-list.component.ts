@@ -1,8 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { AppState } from 'src/app/store/app.reducer';
 import { Receipe } from '../receipe.model';
-import { ReceipeService } from '../receipe.service';
 
 @Component({
   selector: 'app-receipe-list',
@@ -12,15 +14,21 @@ import { ReceipeService } from '../receipe.service';
 export class ReceipeListComponent implements OnInit,OnDestroy {
   subscription:Subscription;
   receipes:Receipe[]=[];
-  constructor(private receipeService:ReceipeService, private route:ActivatedRoute, private router:Router) { }
+  constructor(
+    private route:ActivatedRoute, 
+    private router:Router,
+    private store:Store<AppState>) { }
  
   ngOnInit(): void {
-    this.subscription=this.receipeService.receipeChanges.subscribe(
+    this.subscription=this.store.select('receipes').pipe(
+      map(
+        receipeState => receipeState.receipes
+      )
+    ).subscribe(
       (receipes)=>{
         this.receipes=receipes;
       }
     )
-    this.receipes=this.receipeService.getReceipes();
   }
   
   onAddNew(){
