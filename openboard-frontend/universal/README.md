@@ -1,6 +1,6 @@
-# AngularApp
+# Universal
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.3.4.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.0.6.
 
 ## Development server
 
@@ -26,5 +26,18 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
 
-## Add nguniversal
-``` ng add @nguniversal/express-engine --ClientProject angular-app ```
+
+## Add Universal
+``` ng add @nguniversal/express-engine ```
+
+● Then you can live serve the Universal app on localhost:4200 by running ...
+
+npm run dev:ssr
+
+
+
+● Or you can use the two commands shown by Max, and serve a static build of the app on localhost:4000:
+
+npm run build:ssr
+
+npm run serve:ssr
