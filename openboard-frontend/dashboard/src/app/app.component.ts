@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { CognitoService } from './auth/sign-up/cognito.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,17 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'dashboard';
+  title = 'Dashboard';
+  constructor(private router:Router,
+    private cognitoService:CognitoService){
+
+  }
+
+  isAuthenticated():boolean{
+    return false;
+  }
+
+  signOut(){
+    
+  }
 }
