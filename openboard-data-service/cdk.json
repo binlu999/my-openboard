@@ -48,6 +48,20 @@
         "group-event"
       ]
     },
+    "dashboard": {
+      "aaount": "1234567",
+      "region": "us-east-1",
+      "name": "my-open-board",
+      "domainName": "siteurl.com",
+      "subDomain": "dashboard",
+      "billTag": "dashboard",
+      "appModules": [
+        "pptx",
+        "apiemail",
+        "frontend",
+        "group-event"
+      ]
+    },
     "tip": {
       "appName": "my-open-board",
       "appDomain": "tip",

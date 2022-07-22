@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { CognitoService, IUser } from './cognito.service';
+import { CognitoService, IUser } from '../cognito.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -29,10 +29,20 @@ export class SignUpComponent implements OnInit {
       this.loading=false;
       this.isConfirm=true;
     })
-    .catch(()=>{
+    .catch((error)=>{
+      console.log(error);
       this.loading=false;
     });
   }
 
-  confirmSignUp(){}
+  confirmSignUp():void{
+    this.loading=true;
+    this.cognitoService.confirmSignUp(this.user)
+    .then(()=>{
+      this.router.navigate(['/signIn'])
+    })
+    .catch(()=>{
+      this.loading=false;
+    })
+  }
 }

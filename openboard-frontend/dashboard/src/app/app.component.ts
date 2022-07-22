@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { CognitoService } from './auth/sign-up/cognito.service';
+import { CognitoService } from './auth/cognito.service';
 
 @Component({
   selector: 'app-root',
@@ -15,10 +15,13 @@ export class AppComponent {
   }
 
   isAuthenticated():boolean{
-    return false;
+    return this.cognitoService.isAuthenticated();
   }
 
   signOut(){
-    
+    this.cognitoService.signOut()
+      .then(()=>{
+        this.router.navigate(['/signIn']);
+      });
   }
 }
