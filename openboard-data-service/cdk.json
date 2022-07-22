@@ -56,7 +56,6 @@
       "subDomain": "dashboard",
       "billTag": "dashboard",
       "appModules": [
-        "pptx",
         "apiemail",
         "frontend",
         "group-event"
